@@ -107,7 +107,6 @@ function drawFloor(){
 }
 
 function spawnZombie(){
-    // Only spawn boss once per 5 rounds and only if not alive
     if(round % 5 === 0 && !bossAlive){
         bossAlive = true;
         bossIndicator.innerText = 'BOSS INCOMING';
@@ -117,7 +116,6 @@ function spawnZombie(){
         return;
     }
 
-    // Regular zombie spawn
     const edge = Math.floor(Math.random()*4);
     let x,y;
     switch(edge){
@@ -181,29 +179,17 @@ function updateGame(){
 
     ctx.drawImage(playerImg,player.x,player.y,player.width,player.height);
 
-    // Health bar
-    const barWidth = player.width;
-    const barHeight = 6;
-    const x = player.x;
-    const y = player.y - 10;
-    ctx.fillStyle = '#555';
-    ctx.fillRect(x,y,barWidth,barHeight);
-    const healthWidth = barWidth*(player.health/100);
-    ctx.fillStyle = '#0f0';
-    ctx.fillRect(x,y,healthWidth,barHeight);
-    if(player.health<30) ctx.fillStyle='rgba(255,0,0,0.5)', ctx.fillRect(x,y,healthWidth,barHeight);
+    drawPlayerHealth();
 
-    // Bullets
     bullets.forEach((b,i)=>{
         b.x+=b.dx; b.y+=b.dy;
-        ctx.fillStyle='cyan'; // bright bullet
+        ctx.fillStyle='cyan';
         ctx.beginPath();
         ctx.arc(b.x,b.y,b.radius,0,Math.PI*2);
         ctx.fill();
         if(b.x<0||b.x>canvas.width||b.y<0||b.y>canvas.height) bullets.splice(i,1);
     });
 
-    // Zombies
     zombies.forEach((z,zi)=>{
         const dx=player.x-z.x, dy=player.y-z.y, dist=Math.hypot(dx,dy);
         z.x+=(dx/dist)*z.speed; z.y+=(dy/dist)*z.speed;
@@ -242,14 +228,16 @@ function updateGame(){
 }
 
 function showMainMenu(){ mainMenu.style.display='flex'; gameOverMenu.style.display='none'; }
-function startGame(){ 
+
+function startGame(){
     mainMenu.style.display='none'; gameOverMenu.style.display='none';
     player={x:100,y:canvas.height/2-25,width:50,height:50,speed:4,health:100};
     bullets=[]; zombies=[]; score=0; floor=0; round=1; bossHealth=50; bossAlive=false;
     gameRunning=true; startFloor(); updateGame();
 }
-function showGameOver(){ 
-    gameOverMenu.style.display='flex'; 
+
+function showGameOver(){
+    gameOverMenu.style.display='flex';
     if(score>highScore) highScore=score;
     highScoreGameOverUI.innerText=highScore;
     lastRoundGameOverUI.innerText=round;
@@ -259,3 +247,15 @@ startBtn.addEventListener('click',()=>startGame());
 restartBtn.addEventListener('click',()=>startGame());
 mainMenuBtn.addEventListener('click',()=>showMainMenu());
 quitBtn.addEventListener('click',()=>{ window.close(); });
+
+/* ===== PRELOAD FIX ===== */
+const imagesToLoad = [playerImg, zombieImg, zombieBossImg, stairsUpImg, stairsDownImg];
+let loadedCount = 0;
+imagesToLoad.forEach(img=>{
+    img.onload = ()=>{
+        loadedCount++;
+        if(loadedCount===imagesToLoad.length){
+            showMainMenu(); // show menu only after all images are loaded
+        }
+    }
+}); 
