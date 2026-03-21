@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dylan's Zombie Survival</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Fill screen only on phones, optional max width for desktop */
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      touch-action: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-width: 800px; /* keeps it reasonable if opened on big screen */
+      max-height: 600px; /* keeps PC scaling safe */
+      margin: auto;
+    }
+
+    /* Mobile joystick and fire button */
+    #mobileControls {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      pointer-events: none; /* let touches pass through */
+    }
+
+    #joystick, #fireBtn {
+      width: 100px;
+      height: 100px;
+      background-color: rgba(255,0,0,0.4);
+      border-radius: 50%;
+      pointer-events: all;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      user-select: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+
+  <div id="ui">
+    <p>Health: <span id="health">100</span></p>
+    <p>Score: <span id="score">0</span></p>
+    <p>Round: <span id="roundNum">1</span></p>
+  </div>
+
+  <div id="bossIndicator" style="display:none;">
+    <h2>BOSS INCOMING!</h2>
+  </div>
+
+  <div id="mainMenu" class="menu">
+    <h1>Dylan's Zombie Survival</h1>
+    <div id="menuStats">
+      <p>High Score: <span id="highScore">0</span></p>
+      <p>Last Round Survived: <span id="lastRound">0</span></p>
+    </div>
+    <button id="startBtn">Start Game</button>
+  </div>
+
+  <div id="gameOverMenu" class="menu" style="display:none;">
+    <h1>Game Over</h1>
+    <div id="gameOverStats">
+      <p>High Score: <span id="highScoreGameOver">0</span></p>
+      <p>Round Survived: <span id="lastRoundGameOver">0</span></p>
+    </div>
+    <button id="restartBtn">Restart</button>
+    <button id="mainMenuBtn">Main Menu</button>
+    <button id="quitBtn">Quit</button>
+  </div>
+
+  <!-- Mobile touch controls -->
+  <div id="mobileControls">
+    <div id="joystick">◯</div>
+    <div id="fireBtn">FIRE</div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="mobile_controls.js"></script>
+
+  <script>
+    // Make canvas auto-resize for phones but stay reasonable on desktops
+    const canvas = document.getElementById('gameCanvas');
+    function resizeCanvas() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = Math.min(w, 800);
+      canvas.height = Math.min(h, 600);
+
+      if(window.player){
+        player.x = Math.min(player.x, canvas.width - player.width);
+        player.y = Math.min(player.y, canvas.height - player.height);
+      }
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('orientationchange', resizeCanvas);
+    window.addEventListener('load', resizeCanvas);
+  </script>
+</body>
+</html>
