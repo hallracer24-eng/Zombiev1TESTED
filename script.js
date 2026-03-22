@@ -248,6 +248,27 @@ restartBtn.addEventListener('click',()=>startGame());
 mainMenuBtn.addEventListener('click',()=>showMainMenu());
 quitBtn.addEventListener('click',()=>{ window.close(); });
 
+// Rating feature
+const stars = document.querySelectorAll('#stars .star');
+let selectedRating = 0;
+
+stars.forEach(star => {
+  star.addEventListener('click', () => {
+    selectedRating = parseInt(star.getAttribute('data-value'));
+    stars.forEach(s => s.classList.remove('selected'));
+    for (let i = 0; i < selectedRating; i++) {
+      stars[i].classList.add('selected');
+    }
+  });
+});
+
+document.getElementById('submitRating').addEventListener('click', () => {
+  const comment = document.getElementById('commentBox').value;
+  // You can send the rating + comment to server here if needed
+  document.getElementById('ratingSection').style.display = 'none';
+  alert('Thank you for rating my game!');
+}); 
+
 /* ===== PRELOAD FIX ===== */
 const imagesToLoad = [playerImg, zombieImg, zombieBossImg, stairsUpImg, stairsDownImg];
 let loadedCount = 0;
@@ -258,4 +279,16 @@ imagesToLoad.forEach(img=>{
             showMainMenu(); // show menu only after all images are loaded
         }
     }
-}); 
+});
+// Contact Me button opens email
+const contactBtn = document.getElementById('contactBtn');
+contactBtn.addEventListener('click', () => {
+  window.location.href = "mailto:hallracing24@gmail.com";
+});
+
+// Portfolio link opens new tab (only clickable on text and arrow)
+const arrow = document.getElementById('arrow');
+document.getElementById('arrow'); arrow.addEventListener('click', () => {
+
+    window.open("https://hallracer24-eng.github.io/WebPortfolioV2/", "_blank");
+});

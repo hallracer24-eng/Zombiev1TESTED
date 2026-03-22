@@ -26,7 +26,36 @@
       <p>Last Round Survived: <span id="lastRound">0</span></p>
     </div>
     <button id="startBtn">Start Game</button>
+
+   <!-- Footer Section inside mainMenu -->
+<div id="footerSection" style="display:flex; justify-content:space-between; width: 100%; margin-top: 20px; align-items:center;">
+ 
+  <!-- Left: Contact Me Button -->
+  <button id="contactBtn" style="background-color:#444; color:#fff; padding:10px 15px; border-radius:8px; border:none; cursor:pointer; font-size:16px;">
+    Contact Me Here
+  </button>
+
+  <!-- Right: Portfolio Link -->
+  <div id="portfolioLink" style="text-align:right; font-size:16px; display:flex; align-items:center; gap:5px; cursor:pointer;">
+    <span id="portfolioText">Enjoying this experience? Check out Dylan's portfolio here</span>
+    <span id="arrow">➔</span>
   </div>
+
+</div> 
+
+<!-- Rating Section -->
+<div id="ratingSection" style="margin-top:20px; text-align:center; display:flex; flex-direction:column; align-items:center;">
+  <h2 style="margin-bottom:10px;">Rate this game</h2>
+  <div id="stars">
+    <span class="star" data-value="1">★</span>
+    <span class="star" data-value="2">★</span>
+    <span class="star" data-value="3">★</span>
+    <span class="star" data-value="4">★</span>
+    <span class="star" data-value="5">★</span>
+  </div>
+  <textarea id="commentBox" rows="3" placeholder="Leave a comment..." style="margin-top:10px; width:70%; max-width:400px;"></textarea>
+  <button id="submitRating" style="margin-top:10px; padding:10px 20px; font-size:18px;">Submit</button>
+</div> 
 
   <div id="gameOverMenu" class="menu" style="display:none;">
     <h1>Game Over</h1>
